@@ -27,6 +27,7 @@ run5_1 = {'nodes_num': random.randint(20, 30),
 run5_2 = {'trans_packets_num': [random.randint(5, 16) for _ in range(run5_1['nodes_num'])],
           'nodes_dist': random.sample(range(1, 186), run5_1['nodes_num'])}
 
+
 c = 3e8
 prop_speed = 0.65 * c
 trans_speed = 1.25e6

@@ -44,7 +44,7 @@ class Node:
 
     def exponential_backoff_time(self, trans_speed, general_collisions):
         rand_num = random.random() * (pow(2, general_collisions) - 1)
-        return rand_num * 512/float(trans_speed)  # 512 bit-times
+        return rand_num * 64/float(trans_speed)  # 512 bit-times
 
     def pop_packet(self):
         self.queue.popleft()
@@ -65,3 +65,4 @@ class Node:
                 self.queue[i] = backoff_time
             else:
                 break
+
