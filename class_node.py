@@ -3,13 +3,13 @@ import math
 import collections
 import utils
 
-maxSimulationTime = 100
+maxSimulationTime = 10
 
 
 class Node:
     def __init__(self, location, trans_packets_num):
         self.queue = collections.deque(self.generate_queue(trans_packets_num))
-        self.location = location  # Defined as a multiple of D
+        self.location = location
         self.collisions = 0
         self.wait_collisions = 0
         self.MAX_COLLISIONS = 10
@@ -17,10 +17,8 @@ class Node:
     def collision_occured(self, trans_speed):
         self.collisions += 1
         if self.collisions > self.MAX_COLLISIONS:
-            # Drop packet and reset collisions
             return self.pop_packet()
 
-        # Add the exponential backoff time to waiting time
         backoff_time = self.queue[0] + self.exponential_backoff_time(trans_speed, self.collisions)
 
         for i in range(len(self.queue)):
@@ -44,7 +42,7 @@ class Node:
 
     def exponential_backoff_time(self, trans_speed, general_collisions):
         rand_num = random.random() * (pow(2, general_collisions) - 1)
-        return rand_num * 64/float(trans_speed)  # 512 bit-times
+        return rand_num * 64/float(trans_speed)
 
     def pop_packet(self):
         self.queue.popleft()
@@ -54,10 +52,8 @@ class Node:
     def non_persistent_bus_busy(self, trans_speed):
         self.wait_collisions += 1
         if self.wait_collisions > self.MAX_COLLISIONS:
-            # Drop packet and reset collisions
             return self.pop_packet()
 
-        # Add the exponential backoff time to waiting time
         backoff_time = self.queue[0] + self.exponential_backoff_time(trans_speed, self.wait_collisions)
 
         for i in range(len(self.queue)):

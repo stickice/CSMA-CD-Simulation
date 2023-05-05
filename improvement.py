@@ -56,7 +56,6 @@ def imp(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop_
                 t_prop = delta_location / prop_speed
                 t_trans = packet_len / trans_speed
 
-                # Check collision
                 will_collide = True if node.queue[0] <= (curr_time + t_prop) else False
 
                 if (curr_time + t_prop) < node.queue[0] < (curr_time + t_prop + t_trans):
@@ -78,10 +77,10 @@ def imp(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop_
                     transmitted_packets += 1
                     node.collision_occured(trans_speed)
 
-        if collision_occurred_once is not True:  # If no collision happened
+        if collision_occurred_once is not True:  # no collision
             suc_trans_packets += 1
             min_node.pop_packet()
-        else:  # If a collision occurred
+        else:  # collision occur
             min_node.collision_occured(trans_speed)
             collision_cnt += 1
             # print(successfully_transmitted_packets)

@@ -39,7 +39,11 @@ def main(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop
                 min_node = min_node if min_node.queue[0] < node.queue[0] else node
 
         if min_node.location is None:
+            print(suc_trans_packets)
+            print(transmitted_packets)
+            print(packet_len*suc_trans_packets/(curr_time+(packet_len/trans_speed))*1e-6)
             print('All packets transferred!')
+            print('end!')
             break
 
         curr_time = min_node.queue[0]
@@ -55,7 +59,6 @@ def main(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop
                 t_prop = delta_location / prop_speed
                 t_trans = packet_len / trans_speed
 
-                # Check collision
                 will_collide = True if node.queue[0] <= (curr_time + t_prop) else False
 
                 if (curr_time + t_prop) < node.queue[0] < (curr_time + t_prop + t_trans):
@@ -73,10 +76,10 @@ def main(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop
                     transmitted_packets += 1
                     node.collision_occured(trans_speed)
 
-        if collision_occurred_once is not True:  # If no collision happened
+        if collision_occurred_once is not True:  # no collision
             suc_trans_packets += 1
             min_node.pop_packet()
-        else:  # If a collision occurred
+        else:  # collision occur
             min_node.collision_occured(trans_speed)
             collision_cnt += 1
             # print(successfully_transmitted_packets)
@@ -98,10 +101,6 @@ def main(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop
 
     return {'nodes_num': nodes_num, 'x_time': x_time, 'lost_packets': lost_packets,
             'collision_num': collision_num, 'trans_num': trans_num, 'suc_trans_num': suc_trans_num}
-
-    # print("Effeciency", successfully_transmitted_packets/float(transmitted_packets))
-    # print("Throughput", (L * successfully_transmitted_packets) / float(curr_time + (L/R)) * pow(10, -6), "Mbps")
-    # print("")
 
 
 def imp(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop_speed, is_persistent=True):
@@ -127,6 +126,10 @@ def imp(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop_
                 min_node = min_node if min_node.queue[0] < node.queue[0] else node
 
         if min_node.location is None:
+            print(suc_trans_packets)
+            print(transmitted_packets)
+            print(packet_len*suc_trans_packets/(curr_time+(packet_len/trans_speed))*1e-6)
+            print('end!')
             print('All packets transferred!')
             break
 
@@ -165,10 +168,10 @@ def imp(nodes_num, trans_packets_num, trans_speed, packet_len, nodes_dist, prop_
                     transmitted_packets += 1
                     node.collision_occured(trans_speed)
 
-        if collision_occurred_once is not True:  # If no collision happened
+        if collision_occurred_once is not True:  # no collision
             suc_trans_packets += 1
             min_node.pop_packet()
-        else:  # If a collision occurred
+        else:  # collision occur
             min_node.collision_occured(trans_speed)
             collision_cnt += 1
             # print(successfully_transmitted_packets)
@@ -232,8 +235,8 @@ if __name__ == "__main__":
     # print(t['nodes_num'])
     # utils.draw_normal_run(t)
 
-    run6 = main(parameters.run2['fix_nodes_num'], parameters.run2['trans_packets_num'], parameters.trans_speed,
-                parameters.packet_len, parameters.run2['nodes_dist'], parameters.prop_speed)
+    run6 = main(parameters.run3['fix_nodes_num'], parameters.run3['trans_packets_num'], parameters.trans_speed,
+                parameters.packet_len, parameters.run3['nodes_dist'], parameters.prop_speed)
     #
     # run7 = main(parameters.run2['fix_nodes_num'], parameters.run2['trans_packets_num'], 6.25e6,
     #             parameters.packet_len, parameters.run2['nodes_dist'], parameters.prop_speed)
@@ -241,9 +244,9 @@ if __name__ == "__main__":
     # run8 = main(parameters.run2['fix_nodes_num'], parameters.run2['trans_packets_num'], 1.25e7,
     #             parameters.packet_len, parameters.run2['nodes_dist'], parameters.prop_speed)
 
-    run9 = imp(parameters.run2['fix_nodes_num'], parameters.run2['trans_packets_num'], parameters.trans_speed,
-                parameters.packet_len, parameters.run2['nodes_dist'], parameters.prop_speed)
+    # run9 = imp(parameters.run2['fix_nodes_num'], parameters.run2['trans_packets_num'], parameters.trans_speed,
+    #             parameters.packet_len, parameters.run2['nodes_dist'], parameters.prop_speed)
 
     # utils.draw_imp_trans([run6, run7, run8])
     # utils.draw_single_lost(run9)
-    utils.draw_imp_listen_time([run6, run9])
+    # utils.draw_imp_listen_time([run6, run9])
